@@ -22,14 +22,14 @@ public class conexion {
     try{
         con= DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE","FARMACIA_R_S","FARMACIA_R_S123");
         //el primer parametro hace referencia adonde se va a conectar(base de datos), el segundo parametro es root, clave (si no existe se pone cadena vacia)
-       JOptionPane.showMessageDialog(null, "Estas conectado a la base");
+//       JOptionPane.showMessageDialog(null, "Estas conectado a la base");
     }catch(Exception ex){
          JOptionPane.showMessageDialog(null, "ERROR EN LA CONEXION "+ ex);
     } return con; 
  }
-        public static void main(String[] args) {
-       conexion cone = new conexion();
-       cone.conectar();
-    }
+//        public static void main(String[] args) {
+//       conexion cone = new conexion();
+//       cone.conectar();
+//    }
     
 }
