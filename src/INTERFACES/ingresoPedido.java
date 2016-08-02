@@ -25,29 +25,17 @@ public class ingresoPedido extends javax.swing.JFrame {
      * Creates new form ingresoPedido
      */
     DefaultTableModel modelo;
+
     public ingresoPedido() {
         initComponents();
+//        this.setResizable(MAXIMIZED_BOTH);
+        this.setExtendedState(MAXIMIZED_BOTH);
         cargarTab();
         jPanel2.setVisible(false);
     }
-    
-    private void cargardatos() {
-        tblMedicamentos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 
-            @Override
-            public void valueChanged(ListSelectionEvent lse) {
-                if (tblMedicamentos.getSelectedRow() != -1) {
-                    int fila = tblMedicamentos.getSelectedRow();
-
-
-                }
-            }
-        });
-    }
-    
-    
     private void cargarTab() {
-        String[] titulos = {"CODIGO", "NOMBRE COMERCIAL", "COMPONENTE PRIMARIO", "TIPO DE MEDICAMENTO", "FECHA DE CADUCIDAD", "MILIGRAMAGE","LOTE", "STOCK", "PVP", "PVC", "PRESENTACIÓN", "VIA DE ADMINISTRACIÓN","TIPO DE VENTA"};
+        String[] titulos = {"CODIGO", "NOMBRE COMERCIAL", "COMPONENTE PRIMARIO", "TIPO DE MEDICAMENTO", "FECHA DE CADUCIDAD", "MILIGRAMAGE", "LOTE", "STOCK", "PVP", "PVC", "PRESENTACIÓN", "VIA DE ADMINISTRACIÓN", "TIPO DE VENTA"};
         String[] registros = new String[13];
         modelo = new DefaultTableModel(null, titulos);
         tblMedicamentos.setModel(modelo);
@@ -70,8 +58,8 @@ public class ingresoPedido extends javax.swing.JFrame {
                 registros[8] = rs.getString("PVP_MED");
                 registros[9] = rs.getString("PVC_MED");
                 registros[10] = rs.getString("PREST_MED");
-                registros[11] = rs.getString("VIA_ADM"); 
-                registros[12] = rs.getString("TIPO_VENTA");                
+                registros[11] = rs.getString("VIA_ADM");
+                registros[12] = rs.getString("TIPO_VENTA");
                 modelo.addRow(registros);
 
             }
@@ -277,7 +265,19 @@ public class ingresoPedido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jPanel2.setVisible(true);
+        if (tblMedicamentos.getSelectedRow() != -1) {
+            int fila = tblMedicamentos.getSelectedRow();
+            System.out.println("la fila es = " + fila);
+            System.out.println("===> " + tblMedicamentos.getValueAt(fila, 0).toString().trim());
+            System.out.println("===> " + tblMedicamentos.getValueAt(fila, 1).toString().trim());
+            System.out.println("===> " + tblMedicamentos.getValueAt(fila, 9).toString().trim());
+            jPanel2.setVisible(true);
+
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un medicamento para realizar el pedido");
+        }
+
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
