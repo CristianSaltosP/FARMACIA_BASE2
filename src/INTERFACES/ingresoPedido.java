@@ -31,7 +31,7 @@ public class ingresoPedido extends javax.swing.JFrame {
     /**
      * Creates new form ingresoPedido
      */
-    DefaultTableModel modelo,modelo1;
+    DefaultTableModel modelo, modelo1;
 
     public ingresoPedido() {
         initComponents();
@@ -39,11 +39,11 @@ public class ingresoPedido extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         cargarTab();
         jPanel2.setVisible(false);
-        String[] titulos = {"CODIGO", "NOMBRE COMERCIAL", "PVC","CANTIDAD","SUBTOTAL"};
+        String[] titulos = {"CODIGO", "NOMBRE COMERCIAL", "PVC", "CANTIDAD", "SUBTOTAL"};
         String[] registros = new String[5];
         modelo1 = new DefaultTableModel(null, titulos);
         tblDetalles.setModel(modelo1);
-        
+
     }
 
     private void cargarTab() {
@@ -80,34 +80,33 @@ public class ingresoPedido extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-    
-    public void pedidos(){
-        
+
+    public void pedidos() {
+
         int fila = tblMedicamentos.getSelectedRow();
-            
-            String codigo= tblMedicamentos.getValueAt(fila, 0).toString().trim();
+
+        String codigo = tblMedicamentos.getValueAt(fila, 0).toString().trim();
 //            String nombre= tblMedicamentos.getValueAt(fila, 1).toString().trim();
 //            double precio =Double.valueOf(tblMedicamentos.getValueAt(fila, 9).toString()) ;
 //            System.out.println("valor= "+codigo);
 //            System.out.println("valor= "+nombre);
 //            System.out.println("valor= "+precio);
-            String cantidad=txtCantidad.getText();
-           
+        String cantidad = txtCantidad.getText();
 
         String[] registros = new String[5];
- 
+
         conexion cc = new conexion();
         Connection cn = cc.conectar();
         String sql = "";
-        sql = "select* from MEDICAMENTOS WHERE COD_MED='"+codigo+"'";
-        sql = "select* from SUBTOTAL_TEMPORAL_PEDIDO WHERE COD_MED='"+codigo+"'";
+        sql = "select* from MEDICAMENTOS WHERE COD_MED='" + codigo + "'";
+        sql = "select* from SUBTOTAL_TEMPORAL_PEDIDO WHERE COD_MED='" + codigo + "'";
         try {
             Statement psd = cn.createStatement();
             ResultSet rs = psd.executeQuery(sql);
-            
+
             while (rs.next()) {
                 registros[0] = rs.getString("COD_MED");
-                registros[1] = rs.getString("NOM_COMERCIAL");             
+                registros[1] = rs.getString("NOM_COMERCIAL");
                 registros[2] = rs.getString("PVC_MED");
                 registros[3] = cantidad;
                 modelo1.addRow(registros);
@@ -118,38 +117,23 @@ public class ingresoPedido extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
-        
-            
+
     }
-    
-    public void ingresarPedido(){
-        
 
- 
-
+    public void ingresarPedido() {
         conexion cc = new conexion();
         Connection cn = cc.conectar();
-        
-        String FEC_HOR_PED,CI_PROV_P,CI_FAR_P,FEC_HOR_PED1="02/08/2016";
+
+        String FEC_HOR_PED, CI_PROV_P, CI_FAR_P, FEC_HOR_PED1 = "02/08/2016";
         int NUM_PED;
-        
         double TOTAL_PED;
-        
+        NUM_PED = Integer.valueOf(txtCodigo.getText());
 
-         
-         
-       NUM_PED = Integer.valueOf(txtCodigo.getText());
-       
-       
-       CI_PROV_P=txtCedProv.getText();
-       CI_FAR_P=txtCedFarm.getText();
-     SimpleDateFormat formateador = new SimpleDateFormat ("yyyy-mm-dd"); 
-     String fecha=formateador.format (txtFecha.getDate()); 
-     System.out.println(fecha);
-
-
-       
-
+        CI_PROV_P = txtCedProv.getText();
+        CI_FAR_P = txtCedFarm.getText();
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-mm-dd");
+        String fecha = formateador.format(txtFecha.getDate());
+        System.out.println(fecha);
 
         String sql = "";
         sql = "insert into PEDIDOS (NUM_PED, FEC_HOR_PED,TOTAL_PED,CI_PROV_P,CI_FAR_P) values(?,TO_DATE(?,'YYYY/MM/DD'),?,?,?)";
@@ -157,26 +141,23 @@ public class ingresoPedido extends javax.swing.JFrame {
         try {
             PreparedStatement psd1 = cn.prepareStatement(sql);
 
-            psd1.setInt(1,NUM_PED);
-            psd1.setString(2,fecha);
-            psd1.setDouble(3,0);
+            psd1.setInt(1, NUM_PED);
+            psd1.setString(2, fecha);
+            psd1.setDouble(3, 0);
             psd1.setString(4, CI_PROV_P);
-            psd1.setString(5,CI_FAR_P);
-
-
-           
+            psd1.setString(5, CI_FAR_P);
 
             int n;
 
             n = psd1.executeUpdate();
-  
+
             if (n > 0) {
                 JOptionPane.showMessageDialog(null, "se inserto correctamente");
 
             }
 
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null,"Robin= "+ ex);
+            JOptionPane.showMessageDialog(null, "Robin= " + ex);
         }
     }
 
@@ -380,17 +361,16 @@ public class ingresoPedido extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         ingresarPedido();
         
-//        if (tblMedicamentos.getSelectedRow() != -1) {
-//           
-//            jPanel2.setVisible(true);
-//            JOptionPane.showMessageDialog(null, "Ingrese la cantidad que desee pedir");
-//
-//        }else{
-//            JOptionPane.showMessageDialog(null, "Seleccione un medicamento para realizar el pedido");
-//        }
 
+        if (tblMedicamentos.getSelectedRow() != -1) {
+            ingresarPedido();
+            jPanel2.setVisible(true);
+            JOptionPane.showMessageDialog(null, "Ingrese la cantidad que desee pedir");
+
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un medicamento para realizar el pedido");
+        }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
