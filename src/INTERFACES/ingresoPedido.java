@@ -130,58 +130,54 @@ public class ingresoPedido extends javax.swing.JFrame {
         conexion cc = new conexion();
         Connection cn = cc.conectar();
         
-        String CI_PROV_P,CI_FAR_P,FEC_HOR_PED1="SYSDATE";
+        String FEC_HOR_PED,CI_PROV_P,CI_FAR_P,FEC_HOR_PED1="02/08/2016";
         int NUM_PED;
-        Date FEC_HOR_PED;
+        
         double TOTAL_PED;
         
 
          
          
-//       NUM_PED = Integer.valueOf(txtCodigo.getText());
+       NUM_PED = Integer.valueOf(txtCodigo.getText());
        
-       System.out.println(txtFecha.getDate());
+       
        CI_PROV_P=txtCedProv.getText();
        CI_FAR_P=txtCedFarm.getText();
-//     SimpleDateFormat formateador = new SimpleDateFormat ("yyyy-mm-dd"); 
-//     String fecha=formateador.format (txtFecha.getDate()); 
-//     System.out.println(fecha);
-       
-String dia = Integer.toString(txtFecha.getCalendar().get(Calendar.DAY_OF_MONTH));
-String mes = Integer.toString(txtFecha.getCalendar().get(Calendar.MONTH) + 1);
-String year = Integer.toString(txtFecha.getCalendar().get(Calendar.YEAR));
-String fecha = (dia + "/" + mes+ "/" + year);
-        System.out.println(fecha);
+     SimpleDateFormat formateador = new SimpleDateFormat ("yyyy-mm-dd"); 
+     String fecha=formateador.format (txtFecha.getDate()); 
+     System.out.println(fecha);
+
+
        
 
 
-//        String sql = "";
-//        sql = "insert into PEDIDOS (NUM_PED, FEC_HOR_PED,TOTAL_PED,CI_PROV_P,CI_FAR_P) values(?,?,?,?,?)";
-//
-//        try {
-//            PreparedStatement psd1 = cn.prepareStatement(sql);
-//
-//            psd1.setInt(1,NUM_PED);
-//            psd1.setString(2, FEC_HOR_PED1);
-//            psd1.setDouble(3,0);
-//            psd1.setString(4, CI_PROV_P);
-//            psd1.setString(5,CI_FAR_P);
-//
-//
-//           
-//
-//            int n;
-//
-//            n = psd1.executeUpdate();
-//  
-//            if (n > 0) {
-//                JOptionPane.showMessageDialog(null, "se inserto correctamente");
-//
-//            }
-//
-//        } catch (SQLException ex) {
-//            JOptionPane.showMessageDialog(null,"Robin= "+ ex);
-//        }
+        String sql = "";
+        sql = "insert into PEDIDOS (NUM_PED, FEC_HOR_PED,TOTAL_PED,CI_PROV_P,CI_FAR_P) values(?,TO_DATE(?,'YYYY/MM/DD'),?,?,?)";
+
+        try {
+            PreparedStatement psd1 = cn.prepareStatement(sql);
+
+            psd1.setInt(1,NUM_PED);
+            psd1.setString(2,fecha);
+            psd1.setDouble(3,0);
+            psd1.setString(4, CI_PROV_P);
+            psd1.setString(5,CI_FAR_P);
+
+
+           
+
+            int n;
+
+            n = psd1.executeUpdate();
+  
+            if (n > 0) {
+                JOptionPane.showMessageDialog(null, "se inserto correctamente");
+
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null,"Robin= "+ ex);
+        }
     }
 
     /**
