@@ -264,6 +264,46 @@ public class ingresoPedido extends javax.swing.JFrame {
         }
     }
 
+    public void realizarPedido() {
+        if (tblMedicamentos.getSelectedRow() != -1 ) {
+            if( txtCantidad.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "Ingrese la cantidad deseada");
+            }else{
+            int f = 0;
+            int cant = tblDetalles.getRowCount();
+            int s = tblMedicamentos.getSelectedRow();
+            String dato = String.valueOf(tblMedicamentos.getValueAt(s, 0));
+            
+            if (cant > 0) {
+                for (int j = 0; j < cant; j++) {
+
+                    String dato1 = String.valueOf(tblDetalles.getValueAt(j, 0));
+                    
+                    if (dato1.equals(dato)) {
+                        
+                        f = 1;
+                        break;
+                    }
+
+                }
+                if (f == 1) {
+                    JOptionPane.showMessageDialog(null, "No se puede ingresar el mismo medicamento...Si desea puede realizar una actualizocion");
+                } else {
+                    ingresarDetallePedido();
+                    pedidos();
+                }
+
+            } else {
+                ingresarDetallePedido();
+                pedidos();
+            }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un medicamento para realizar el pedido");
+        }
+
+    }
+
     public void bloqueoCampos() {
         txtCodigo.setEnabled(false);
         txtCedProv.setEnabled(false);
@@ -644,25 +684,8 @@ public class ingresoPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       
-
-        int cant = tblDetalles.getRowCount();
-        int s = tblMedicamentos.getSelectedRow();
-        int r = tblDetalles.getSelectedRow();
-        String dato = String.valueOf(tblMedicamentos.getValueAt(s, 0));
-        for (int i = 0; i < cant; i++) {
-            String dato1 = String.valueOf(tblDetalles.getValueAt(i, 0));
-            if (dato == dato1) {
-                JOptionPane.showMessageDialog(null, "Ya existe");
-                break;
-            }else{
-                 ingresarDetallePedido();
-        pedidos();  
-            }
-
-        }
-
-
+        realizarPedido();
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
