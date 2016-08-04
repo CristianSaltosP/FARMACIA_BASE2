@@ -27,9 +27,9 @@ public class conexion {
          JOptionPane.showMessageDialog(null, "ERROR EN LA CONEXION "+ ex);
     } return con; 
  }
-//        public static void main(String[] args) {
-//       conexion cone = new conexion();
-//       cone.conectar();
-//    }
+        public static void main(String[] args) {
+       conexion cone = new conexion();
+       cone.conectar();
+    }
     
 }
