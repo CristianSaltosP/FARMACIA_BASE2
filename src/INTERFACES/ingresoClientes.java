@@ -64,7 +64,6 @@ public class ingresoClientes extends javax.swing.JFrame {
         btnnuevo.setEnabled(false);
         btnguardar.setEnabled(true);
         btnmodificar.setEnabled(false);
-        btneliminar.setEnabled(false);
         btncancelar.setEnabled(true);
         btnsalir.setEnabled(true);
         txtCedula.requestFocus();
@@ -74,7 +73,6 @@ public class ingresoClientes extends javax.swing.JFrame {
         btnnuevo.setEnabled(true);
         btnguardar.setEnabled(false);
         btnmodificar.setEnabled(false);
-        btneliminar.setEnabled(false);
         btncancelar.setEnabled(false);
         btnsalir.setEnabled(true);
     }
@@ -94,7 +92,6 @@ public class ingresoClientes extends javax.swing.JFrame {
                     desbloqueartxt();
                     txtCedula.setEnabled(false);
                     btnmodificar.setEnabled(true);
-                    btneliminar.setEnabled(true);
                     btncancelar.setEnabled(true);   
                 }
             }
@@ -192,27 +189,7 @@ public class ingresoClientes extends javax.swing.JFrame {
     
     
     
-    public void borrar() {
-        if (JOptionPane.showConfirmDialog(null, "SEGURO QUE QUIERE BORRAR", "BORRAR REGISTRO", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            conexion cc = new conexion();
-            Connection cn = cc.conectar();
-            String codigo = txtCedula.getText();
-            String sql = " ";
-            sql = "delete from clientes WHERE CI_CLI ='" + codigo + "'";
-            try {
-                PreparedStatement psd = cn.prepareStatement(sql);
-                int i = psd.executeUpdate();
-                if (i > 0) {
-                    JOptionPane.showMessageDialog(null, "REGISTRO BORRADO");
-                    limpiartxt();
-                    cargarTabla("");
-                   
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, e);
-            }
-        }
-    }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -239,7 +216,6 @@ public class ingresoClientes extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblclientes = new javax.swing.JTable();
         btnmodificar = new javax.swing.JButton();
-        btneliminar = new javax.swing.JButton();
         btnnuevo = new javax.swing.JButton();
         btncancelar = new javax.swing.JButton();
         btnsalir = new javax.swing.JButton();
@@ -356,13 +332,6 @@ public class ingresoClientes extends javax.swing.JFrame {
             }
         });
 
-        btneliminar.setText("ELIMINAR");
-        btneliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btneliminarActionPerformed(evt);
-            }
-        });
-
         btnnuevo.setText("NUEVO");
         btnnuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -393,7 +362,6 @@ public class ingresoClientes extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnguardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnmodificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btneliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnnuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btncancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnsalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -412,8 +380,6 @@ public class ingresoClientes extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnmodificar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btneliminar)
-                        .addGap(9, 9, 9)
                         .addComponent(btncancelar)
                         .addGap(9, 9, 9)
                         .addComponent(btnsalir)))
@@ -434,10 +400,6 @@ public class ingresoClientes extends javax.swing.JFrame {
         actualizar();
     }//GEN-LAST:event_btnmodificarActionPerformed
 
-    private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btneliminarActionPerformed
-
     private void btnnuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnuevoActionPerformed
        desbloqueartxt();
         limpiartxt();
@@ -450,7 +412,6 @@ public class ingresoClientes extends javax.swing.JFrame {
         btnnuevo.setEnabled(true);
         btnguardar.setEnabled(false);
         btnmodificar.setEnabled(false);
-        btneliminar.setEnabled(false);
         btncancelar.setEnabled(false);
         btnsalir.setEnabled(true);
         txtCedula.requestFocus();
@@ -495,7 +456,6 @@ public class ingresoClientes extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btncancelar;
-    private javax.swing.JButton btneliminar;
     private javax.swing.JButton btnguardar;
     private javax.swing.JButton btnmodificar;
     private javax.swing.JButton btnnuevo;
