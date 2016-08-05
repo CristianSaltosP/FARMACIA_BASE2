@@ -9,10 +9,13 @@ package INTERFACES;
 import Conexion.conexion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -25,7 +28,128 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
      */
     public ingresoFarmaceuticos() {
         initComponents();
+        cargarTabla("");
+//        cargarDatos();
     }
+    
+     DefaultTableModel modelo;
+    
+    private void limpiartxt() {
+        txtCedula.setText("");
+        txtNombre.setText("");
+        txtApellido.setText("");
+        txtSueldo.setText("");
+        txtTelefono.setText("");
+        txtDireccion.setText("");
+        txtEmail.setText("");
+        txtSupervisor.setText("");  
+    }
+    
+    
+     public void bloqueartxt() {
+        txtCedula.setEnabled(false);
+       txtNombre.setEnabled(false);
+        txtApellido.setEnabled(false);
+        txtSueldo.setEnabled(false);
+        txtTelefono.setEnabled(false);
+        txtDireccion.setEnabled(false);
+        txtEmail.setEnabled(false);
+        txtSupervisor.setEnabled(false);
+        
+    }
+     
+     public void desbloqueartxt() {
+        txtCedula.setEnabled(true);
+        txtNombre.setEnabled(true);
+        txtApellido.setEnabled(true);
+        txtSueldo.setEnabled(true);
+        txtTelefono.setEnabled(true);
+        txtDireccion.setEnabled(true);
+        txtEmail.setEnabled(true);
+        txtSupervisor.setEnabled(true);
+        
+    }
+     
+     private void botoneslimpios() {
+        btnnuevo.setEnabled(true);
+        btnguardar.setEnabled(false);
+        btnmodificar.setEnabled(false);
+        btneliminar.setEnabled(false);
+        btncancelar.setEnabled(false);
+        btnsalir.setEnabled(true);
+    }
+     
+     
+     private void botonnuevo() {
+        btnnuevo.setEnabled(false);
+        btnguardar.setEnabled(true);
+        btnmodificar.setEnabled(false);
+        btneliminar.setEnabled(false);
+        btncancelar.setEnabled(true);
+        btnsalir.setEnabled(true);
+        txtCedula.requestFocus();
+    }
+     
+     
+     public void cargarTabla(String Dato) {
+        String filas[] = new String[7];
+        
+        String titulos[] = {"CI_FAR", "NOM_FAR", "APE_FAR", "TEL_FAR", "DIR_FAR", "E_MAIL_FAR", "SUP_ADMIN"};
+        modelo = new DefaultTableModel(null, titulos);
+        Conexion.conexion cc = new Conexion.conexion();
+        Connection cn = cc.conectar();
+        String sql = " ";
+        sql = "select * from farmaceuticos where CI_FAR like '%" + Dato + "%'";
+        try {
+            Statement psd = cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            String temp1, temp2;
+            while (rs.next()) {
+                filas[0] = rs.getString("CI_FAR");
+                filas[1] = rs.getString("NOM_FAR");
+                filas[2] = rs.getString("APE_FAR");
+                filas[3] = rs.getString("TEL_FAR");
+                filas[4] = rs.getString("DIR_FAR");
+                filas[5] = rs.getString("E_MAIL_FAR");
+                filas[6] = rs.getString("SUP_ADMIN");
+
+                modelo.addRow(filas);
+            }
+            tblfarmaceuticos.setModel(modelo);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "TABLA NO CARGADA");
+        }
+
+    }
+     
+     
+     
+     public void actualizar() {
+        int f = tblfarmaceuticos.getSelectedRow();
+        Conexion.conexion cc = new Conexion.conexion();
+        Connection cn = cc.conectar();
+        String sql = " ";
+
+        sql = "update farmaceuticos set NOM_FAR='" + txtNombre.getText() + 
+                "',APE_FAR='" + txtApellido.getText() + 
+                "',TEL_CLI='" + txtTelefono.getText() +
+                "',DIR_CLI='" + txtDireccion.getText() +
+                "',E_MAIL_FAR='" + txtEmail.getText() +
+                "',SUP_ADMIN='" + txtSupervisor.getText() +
+             "' where CI_FAR='" + txtCedula.getText().trim().replace('-',' ').replaceAll(" ","") + "'";
+        
+        try {
+            PreparedStatement psd = cn.prepareStatement(sql);
+            int i = psd.executeUpdate();
+            if (i > 0) {
+                JOptionPane.showMessageDialog(null, "BASE ACTUALIZADA");
+                cargarTabla("");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
     
      public void ingresoFarma() {
         conexion cc = new conexion();
@@ -97,6 +221,15 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         txtSupervisor = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        btncancelar = new javax.swing.JButton();
+        btnguardar = new javax.swing.JButton();
+        btnsalir = new javax.swing.JButton();
+        btneliminar = new javax.swing.JButton();
+        btnnuevo = new javax.swing.JButton();
+        btnmodificar = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblfarmaceuticos = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -205,16 +338,92 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
             }
         });
 
+        btncancelar.setText("CANCELAR");
+        btncancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelarActionPerformed(evt);
+            }
+        });
+
+        btnguardar.setText("GUARDAR");
+        btnguardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnguardarActionPerformed(evt);
+            }
+        });
+
+        btnsalir.setText("SALIR");
+
+        btneliminar.setText("ELIMINAR");
+        btneliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btneliminarActionPerformed(evt);
+            }
+        });
+
+        btnnuevo.setText("NUEVO");
+        btnnuevo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnnuevoActionPerformed(evt);
+            }
+        });
+
+        btnmodificar.setText("ACTUALIZAR");
+        btnmodificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnmodificarActionPerformed(evt);
+            }
+        });
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Farmaceuticos"));
+
+        tblfarmaceuticos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane1.setViewportView(tblfarmaceuticos);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 533, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnguardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnmodificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btneliminar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnnuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btncancelar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnsalir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,9 +433,22 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
+                        .addGap(23, 23, 23)
+                        .addComponent(btnnuevo)
+                        .addGap(13, 13, 13)
+                        .addComponent(btnguardar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnmodificar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btneliminar)
+                        .addGap(9, 9, 9)
+                        .addComponent(btncancelar)
+                        .addGap(9, 9, 9)
+                        .addComponent(btnsalir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -235,6 +457,38 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
        ingresoFarma();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
+        limpiartxt();
+        bloqueartxt();
+        btnnuevo.setEnabled(true);
+        btnguardar.setEnabled(false);
+        btnmodificar.setEnabled(false);
+        btneliminar.setEnabled(false);
+        btncancelar.setEnabled(false);
+        btnsalir.setEnabled(true);
+        txtCedula.requestFocus();
+
+    }//GEN-LAST:event_btncancelarActionPerformed
+
+    private void btnguardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnguardarActionPerformed
+        ingresoFarma();
+        botoneslimpios();
+    }//GEN-LAST:event_btnguardarActionPerformed
+
+    private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btneliminarActionPerformed
+
+    private void btnnuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnuevoActionPerformed
+        desbloqueartxt();
+        limpiartxt();
+        botonnuevo();
+    }//GEN-LAST:event_btnnuevoActionPerformed
+
+    private void btnmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnmodificarActionPerformed
+       actualizar();
+    }//GEN-LAST:event_btnmodificarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -272,6 +526,12 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btncancelar;
+    private javax.swing.JButton btneliminar;
+    private javax.swing.JButton btnguardar;
+    private javax.swing.JButton btnmodificar;
+    private javax.swing.JButton btnnuevo;
+    private javax.swing.JButton btnsalir;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -282,6 +542,9 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tblfarmaceuticos;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtDireccion;
