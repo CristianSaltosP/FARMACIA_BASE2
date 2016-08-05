@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Stalin
+ * @author 
  */
 public class ingresoPedido extends javax.swing.JFrame {
 
