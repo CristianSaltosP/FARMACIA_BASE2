@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Stalin
+ * @author 
  */
 public class ingresoPedido extends javax.swing.JFrame {
 
@@ -219,7 +219,7 @@ public class ingresoPedido extends javax.swing.JFrame {
 
         modelo1.addRow(registros);
         tblDetalles.setModel(modelo1);
-        cargarTab();
+        
 
     }
 
@@ -279,20 +279,19 @@ public class ingresoPedido extends javax.swing.JFrame {
                             break;
                         }
 
+                        
                     }
                     if (f == 1) {
                         JOptionPane.showMessageDialog(null, "No se puede ingresar el mismo medicamento...Si desea puede realizar una actualizocion");
                     } else {
                         ingresarDetallePedido();
                         pedidos();
-                        totalPedido();
                         txtCantidad.setText("");
                     }
 
                 } else {
                     ingresarDetallePedido();
                     pedidos();
-                    totalPedido();
                     txtCantidad.setText("");
                 }
             }
@@ -398,8 +397,8 @@ public class ingresoPedido extends javax.swing.JFrame {
                     if (n > 0) {
                         JOptionPane.showMessageDialog(null, "se borro el registro correctamente");
                         modelo1.removeRow(fila);
-                        cargarTab();
-                        totalPedido();
+                                        
+                        
                     }
 
                 } catch (SQLException ex) {
@@ -411,6 +410,26 @@ public class ingresoPedido extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Si desea eliminar debe seleccione un viaje");
         }
     }
+       
+       private void limpiarTabla(){
+       for (int i = 0; i < tblDetalles.getRowCount(); i++) {
+           modelo1.removeRow(i);
+           i-=1;
+       }
+       }
+       public void nuevoPedido(){
+        jlNombreP1.setVisible(false);
+        jLabel10.setVisible(false);
+        jLabel11.setVisible(false);
+        jLabel12.setVisible(false);
+        txtCodigo.setText("");
+        txtCedProv.setText("");
+        txtCedFarm.setText("");
+        txtCantidad.setText("");
+        txtFecha.setDate(null);
+        txtLaboratorio.setText("");
+        txtTotal.setText("");
+       }
 
     public void bloqueoCampos() {
         txtCodigo.setEnabled(false);
@@ -877,7 +896,7 @@ public class ingresoPedido extends javax.swing.JFrame {
 
         if (tblMedicamentos.getSelectedRow() != -1) {
             ingresarPedido();
-            bloqueoCampos();
+//            bloqueoCampos();
 
             JOptionPane.showMessageDialog(null, "Ingrese la cantidad que desee pedir");
             jPanel3.setVisible(true);
@@ -890,15 +909,17 @@ public class ingresoPedido extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         realizarPedido();
-
+        cargarTab();
+        totalPedido();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        desbloqueoCampos();
-
-        jPanel2.setVisible(false);
-
+//        desbloqueoCampos();
+        nuevoPedido();
+//        limpiarTabla();
+        tblDetalles.setModel(new DefaultTableModel());
+        
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -935,6 +956,8 @@ public class ingresoPedido extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         eliminarDetalle();
+        cargarTab();
+        totalPedido();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /**

@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author Stalin
+ * @author Stal
  */
 public class conexion {
     
