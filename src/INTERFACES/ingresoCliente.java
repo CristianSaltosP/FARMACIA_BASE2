@@ -111,7 +111,7 @@ public class ingresoCliente extends javax.swing.JFrame {
         TEL_CLI = txtTelefono.getText().toString();
         DIR_CLI = txtDireccion.getText().toString();
 
-        sql = "insert into clientes (CI_CLI, NOM_CLI, APE_CLI, TEL_CLI, DIR_CLI) values(?,?,?,?,?)";
+        sql = "insert into FARMACIA_R_S.clientes (CI_CLI, NOM_CLI, APE_CLI, TEL_CLI, DIR_CLI) values(?,?,?,?,?)";
 
         try {
             PreparedStatement psd1 = cn.prepareStatement(sql);
@@ -140,10 +140,10 @@ public class ingresoCliente extends javax.swing.JFrame {
 
         String titulos[] = {"CI_CLI", "NOM_CLI", "APE_CLI", "TEL_CLI", "DIR_CLI"};
         modelo = new DefaultTableModel(null, titulos);
-        Conexion.conexion cc = new Conexion.conexion();
+        conexion cc = new conexion();
         Connection cn = cc.conectar();
         String sql = " ";
-        sql = "select * from clientes where CI_CLI like '%" + Dato + "%'";
+        sql = "select * from FARMACIA_R_S.clientes where CI_CLI like '%" + Dato + "%'";
         try {
             Statement psd = cn.createStatement();
             ResultSet rs = psd.executeQuery(sql);
