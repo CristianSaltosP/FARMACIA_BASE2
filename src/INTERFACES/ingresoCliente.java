@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package INTERFACES;
 
 import Conexion.conexion;
@@ -76,6 +72,78 @@ public class ingresoCliente extends javax.swing.JFrame {
         btnmodificar.setEnabled(false);
         btncancelar.setEnabled(false);
         btnsalir.setEnabled(true);
+    }
+    
+    
+    
+    private String getCed(String ced) {
+        System.out.println("CED: " + ced);
+        ced = ced.replace('-', ' ').replaceAll(" ", "");
+        System.out.println("ced1: " + ced);
+        return ced;
+    }
+    
+    
+    
+    private boolean verifCedula(String ced) {
+        boolean verifica = false;
+        int n = ced.length();
+        int sumPar = 0, sumaImpar = 0, rpar, rimpar, sumTotal, deceSup, nVerif;
+        String convn;
+        if (n < 10 || n > 10) {
+//            verifica = false;
+//            JOptionPane.showMessageDialog(null, "La cédula debe tener 10 digitos");
+//            System.out.println("cedula incorrecta");
+        } else {
+            String a = String.valueOf(ced.charAt(9));
+            int nVerificador = Integer.valueOf(a);
+//        System.out.println("numero verificador: "+nVerificador);
+            for (int i = 0; i < 10; i += 2) {
+                convn = String.valueOf(ced.charAt(i));
+//                System.out.println("numero: "+convn);
+                rpar = Integer.valueOf(convn) * 2;
+//                System.out.println("rpar*2: "+rpar);
+                if (rpar >= 10) {
+                    rpar = rpar - 9;
+                }
+                sumPar += rpar;
+            }
+//            System.out.println("suma par: "+sumPar);
+            for (int i = 1; i < 9; i += 2) {
+                convn = String.valueOf(ced.charAt(i));
+//                System.out.println("numero: "+convn);
+                rimpar = Integer.valueOf(convn);
+                sumaImpar += rimpar;
+            }
+//            System.out.println("suma impar: "+sumaImpar);
+            sumTotal = sumPar + sumaImpar;
+//            System.out.println("suma total: "+sumTotal);
+            deceSup = ((int) sumTotal / 10) * 10 + 10;
+            nVerif = deceSup - sumTotal;
+//            System.out.println("num v: " + nVerif);
+//            System.out.println(deceSup);
+            if (nVerif == nVerificador || nVerif == 10) {
+                verifica = true;
+                //JOptionPane.showMessageDialog(null, "cedula correcta");
+            }
+        }
+        if (!verifica) {
+            JOptionPane.showMessageDialog(null, "Cedula incorrecta, Ingrese nueamente");
+        }
+        //        System.out.println("cedula es; " + verifica);
+        return verifica;
+    }
+    
+    
+    
+    void focoCedula(){
+        String ced = txtCedula.getText();
+        String ced1 = getCed(ced);
+
+        if (!verifCedula(ced1)) {
+            txtCedula.setText("");
+            txtCedula.requestFocus();
+        }
     }
     
     
@@ -204,7 +272,6 @@ public class ingresoCliente extends javax.swing.JFrame {
         btnguardar = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         txtNombre = new javax.swing.JTextField();
-        txtCedula = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         txtApellido = new javax.swing.JTextField();
@@ -213,6 +280,7 @@ public class ingresoCliente extends javax.swing.JFrame {
         txtDireccion = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        txtCedula = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblclientes = new javax.swing.JTable();
@@ -242,25 +310,37 @@ public class ingresoCliente extends javax.swing.JFrame {
 
         jLabel1.setText("CEDULA");
 
+        try {
+            txtCedula.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########-#")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtCedula.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCedulaFocusLost(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(57, 57, 57)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
                         .addGap(23, 23, 23)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtNombre)
-                            .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCedula)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -269,7 +349,7 @@ public class ingresoCliente extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTelefono)
                             .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -420,6 +500,10 @@ public class ingresoCliente extends javax.swing.JFrame {
        
     }//GEN-LAST:event_btncancelarActionPerformed
 
+    private void txtCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCedulaFocusLost
+        focoCedula();
+    }//GEN-LAST:event_txtCedulaFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -471,7 +555,7 @@ public class ingresoCliente extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblclientes;
     private javax.swing.JTextField txtApellido;
-    private javax.swing.JTextField txtCedula;
+    private javax.swing.JFormattedTextField txtCedula;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtTelefono;

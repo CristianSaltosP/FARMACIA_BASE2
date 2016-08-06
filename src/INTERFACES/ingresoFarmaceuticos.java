@@ -27,13 +27,76 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
         initComponents();
     }
     
+     private String getCed(String ced) {
+        System.out.println("CED: " + ced);
+        ced = ced.replace('-', ' ').replaceAll(" ", "");
+        System.out.println("ced1: " + ced);
+        return ced;
+    }
+    
+    
+    
+    private boolean verifCedula(String ced) {
+        boolean verifica = false;
+        int n = ced.length();
+        int sumPar = 0, sumaImpar = 0, rpar, rimpar, sumTotal, deceSup, nVerif;
+        String convn;
+        if (n < 10 || n > 10) {
+//            verifica = false;
+//            JOptionPane.showMessageDialog(null, "La cédula debe tener 10 digitos");
+//            System.out.println("cedula incorrecta");
+        } else {
+            String a = String.valueOf(ced.charAt(9));
+            int nVerificador = Integer.valueOf(a);
+//        System.out.println("numero verificador: "+nVerificador);
+            for (int i = 0; i < 10; i += 2) {
+                convn = String.valueOf(ced.charAt(i));
+//                System.out.println("numero: "+convn);
+                rpar = Integer.valueOf(convn) * 2;
+//                System.out.println("rpar*2: "+rpar);
+                if (rpar >= 10) {
+                    rpar = rpar - 9;
+                }
+                sumPar += rpar;
+            }
+//            System.out.println("suma par: "+sumPar);
+            for (int i = 1; i < 9; i += 2) {
+                convn = String.valueOf(ced.charAt(i));
+//                System.out.println("numero: "+convn);
+                rimpar = Integer.valueOf(convn);
+                sumaImpar += rimpar;
+            }
+//            System.out.println("suma impar: "+sumaImpar);
+            sumTotal = sumPar + sumaImpar;
+//            System.out.println("suma total: "+sumTotal);
+            deceSup = ((int) sumTotal / 10) * 10 + 10;
+            nVerif = deceSup - sumTotal;
+//            System.out.println("num v: " + nVerif);
+//            System.out.println(deceSup);
+            if (nVerif == nVerificador || nVerif == 10) {
+                verifica = true;
+                //JOptionPane.showMessageDialog(null, "cedula correcta");
+            }
+        }
+        if (!verifica) {
+            JOptionPane.showMessageDialog(null, "Cedula incorrecta, Ingrese nueamente");
+        }
+        //        System.out.println("cedula es; " + verifica);
+        return verifica;
+    }
+    
+    
+    
      public void ingresoFarma() {
         conexion cc = new conexion();
         Connection cn = cc.conectar();
         String sql = "";
         String CI_FAR, NOM_FAR, APE_FAR, TEL_FAR, DIR_FAR, E_MAIL_FAR, SUP_ADMIN;
+        String ced = txtCedula.getText().trim();
+        String cedVerf = getCed(ced);
+            
         Integer SUE_FAR;
-        CI_FAR = txtCedula.getText().toString();
+        CI_FAR = cedVerf;
         NOM_FAR = txtNombre.getText().toString();
         APE_FAR = txtApellido.getText().toString();
         SUE_FAR = Integer.valueOf(txtSueldo.getText());
@@ -69,6 +132,18 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
         }
 
     }
+     
+     
+     
+      void focoCedula(){
+        String ced = txtCedula.getText();
+        String ced1 = getCed(ced);
+
+        if (!verifCedula(ced1)) {
+            txtCedula.setText("");
+            txtCedula.requestFocus();
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,7 +156,6 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         txtNombre = new javax.swing.JTextField();
-        txtCedula = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
         txtApellido = new javax.swing.JTextField();
@@ -96,6 +170,7 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
         txtEmail = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtSupervisor = new javax.swing.JTextField();
+        txtCedula = new javax.swing.JFormattedTextField();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -117,6 +192,17 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
         jLabel7.setText("E-MAIL");
 
         jLabel8.setText("SUPERVISOR");
+
+        try {
+            txtCedula.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########-#")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        txtCedula.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtCedulaFocusLost(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -236,6 +322,10 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
        ingresoFarma();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void txtCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtCedulaFocusLost
+        focoCedula();
+    }//GEN-LAST:event_txtCedulaFocusLost
+
     /**
      * @param args the command line arguments
      */
@@ -283,7 +373,7 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txtApellido;
-    private javax.swing.JTextField txtCedula;
+    private javax.swing.JFormattedTextField txtCedula;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNombre;
