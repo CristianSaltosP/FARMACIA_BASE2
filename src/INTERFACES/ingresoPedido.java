@@ -73,7 +73,7 @@ public class ingresoPedido extends javax.swing.JFrame {
         conexion cc = new conexion();
         Connection cn = cc.conectar();
         String sql = "";
-        sql = "select* from MEDICAMENTOS ORDER BY COD_MED";
+        sql = "select* from MEDICAMENTOS";
         try {
             Statement psd = cn.createStatement();
             ResultSet rs = psd.executeQuery(sql);
@@ -908,9 +908,9 @@ public class ingresoPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        realizarPedido();
-        cargarTab();
+        realizarPedido();        
         totalPedido();
+        cargarTab();
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -956,8 +956,8 @@ public class ingresoPedido extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         eliminarDetalle();
-        cargarTab();
         totalPedido();
+        cargarTab();
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
