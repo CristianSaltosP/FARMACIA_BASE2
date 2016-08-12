@@ -100,6 +100,7 @@ public class ingresoPedido extends javax.swing.JFrame {
 
             }
             tblMedicamentos.setModel(modelo);
+            cn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -134,6 +135,7 @@ public class ingresoPedido extends javax.swing.JFrame {
 
             }
             tblLaboratorios.setModel(modelo2);
+            cn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -157,6 +159,7 @@ public class ingresoPedido extends javax.swing.JFrame {
             psd1.setString(2, numPedido);
             psd1.setDouble(3, cantidad);
             psd1.executeUpdate();
+            cn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -212,7 +215,7 @@ public class ingresoPedido extends javax.swing.JFrame {
                 registros[4] = String.valueOf(rs1.getDouble("SUBTOTAL"));
 
             }
-
+            cn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -250,7 +253,7 @@ public class ingresoPedido extends javax.swing.JFrame {
             psd1.setString(4, CI_PROV_P);
             psd1.setString(5, CI_FAR_P);
             psd1.executeUpdate();
-
+            cn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -286,12 +289,16 @@ public class ingresoPedido extends javax.swing.JFrame {
                     } else {
                         ingresarDetallePedido();
                         pedidos();
+                          totalPedido();
+                          cargarTab();
                         txtCantidad.setText("");
                     }
 
                 } else {
                     ingresarDetallePedido();
                     pedidos();
+                     totalPedido();
+                     cargarTab();
                     txtCantidad.setText("");
                 }
             }
@@ -317,7 +324,7 @@ public class ingresoPedido extends javax.swing.JFrame {
 
             }
             txtTotal.setText(String.valueOf(total));
-
+            cn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -339,11 +346,12 @@ public class ingresoPedido extends javax.swing.JFrame {
                 apellido = rs.getString("APE_PROV");
 
             }
+            cn.close();
             jlNombreP1.setVisible(true);
             jLabel10.setVisible(true);
             jlNombreP.setText(nombre);
             jlApellidoP.setText(apellido);
-
+            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, ex);
         }
@@ -365,6 +373,7 @@ public class ingresoPedido extends javax.swing.JFrame {
                 apellido = rs.getString("APE_FAR");
 
             }
+            cn.close();
             jLabel11.setVisible(true);
             jLabel12.setVisible(true);
             jlNombreF.setText(nombre);
@@ -395,7 +404,10 @@ public class ingresoPedido extends javax.swing.JFrame {
                     int n = psd.executeUpdate();
 
                     if (n > 0) {
+                        cn.close();
                         JOptionPane.showMessageDialog(null, "se borro el registro correctamente");
+                        totalPedido();
+                        cargarTab();
                         modelo1.removeRow(fila);
                                         
                         
@@ -909,8 +921,7 @@ public class ingresoPedido extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         realizarPedido();        
-        totalPedido();
-        cargarTab();
+
 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -933,7 +944,7 @@ public class ingresoPedido extends javax.swing.JFrame {
         jDialog1.setSize(500, 300);
         jDialog1.setLocationRelativeTo(this);
         jDialog1.setVisible(true);
-        jDialog1.setVisible(true);
+        
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void tblLaboratoriosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLaboratoriosMouseClicked
@@ -956,8 +967,7 @@ public class ingresoPedido extends javax.swing.JFrame {
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         eliminarDetalle();
-        totalPedido();
-        cargarTab();
+
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
