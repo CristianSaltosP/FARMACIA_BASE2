@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author 
+ * @author
  */
 public class ingresoPedido extends javax.swing.JFrame {
 
@@ -40,7 +40,7 @@ public class ingresoPedido extends javax.swing.JFrame {
         this.setExtendedState(MAXIMIZED_BOTH);
         cargarTab();
         jPanel2.setVisible(false);
-                String[] titulos = {"CODIGO", "NOMBRE COMERCIAL", "PVC", "CANTIDAD", "SUBTOTAL"};
+        String[] titulos = {"CODIGO", "NOMBRE COMERCIAL", "PVC", "CANTIDAD", "SUBTOTAL"};
         String[] registros = new String[5];
         modelo1 = new DefaultTableModel(null, titulos) {
             @Override
@@ -50,7 +50,6 @@ public class ingresoPedido extends javax.swing.JFrame {
         };
         tblDetalles.setModel(modelo1);
 
-        
         jPanel3.setVisible(false);
 
         jlNombreP1.setVisible(false);
@@ -70,7 +69,7 @@ public class ingresoPedido extends javax.swing.JFrame {
             }
         };
         tblMedicamentos.setModel(modelo);
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String sql = "";
         sql = "select* from MEDICAMENTOS";
@@ -116,7 +115,7 @@ public class ingresoPedido extends javax.swing.JFrame {
         };
 
         tblLaboratorios.setModel(modelo2);
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String sql = "";
         sql = "select* from LABORATORIOS ORDER BY COD_LAB";
@@ -140,7 +139,7 @@ public class ingresoPedido extends javax.swing.JFrame {
     }
 
     public void ingresarDetallePedido() {
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         int fila = tblMedicamentos.getSelectedRow();
         String codigo = tblMedicamentos.getValueAt(fila, 0).toString().trim();
@@ -164,7 +163,6 @@ public class ingresoPedido extends javax.swing.JFrame {
 
     public void pedidos() {
 
-
         int fila = tblMedicamentos.getSelectedRow();
 
         String codigo = tblMedicamentos.getValueAt(fila, 0).toString().trim();
@@ -176,8 +174,8 @@ public class ingresoPedido extends javax.swing.JFrame {
         String numPedido = txtCodigo.getText();
         String cantidad = txtCantidad.getText();
 
-       String[] registros = new String[5];
-        conexion cc = new conexion();
+        String[] registros = new String[5];
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String sql = "";
         String sql1 = "";
@@ -219,12 +217,11 @@ public class ingresoPedido extends javax.swing.JFrame {
 
         modelo1.addRow(registros);
         tblDetalles.setModel(modelo1);
-        
 
     }
 
     public void ingresarPedido() {
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
 
         String FEC_HOR_PED, CI_PROV_P, CI_FAR_P;
@@ -279,7 +276,6 @@ public class ingresoPedido extends javax.swing.JFrame {
                             break;
                         }
 
-                        
                     }
                     if (f == 1) {
                         JOptionPane.showMessageDialog(null, "No se puede ingresar el mismo medicamento...Si desea puede realizar una actualizocion");
@@ -302,8 +298,7 @@ public class ingresoPedido extends javax.swing.JFrame {
     }
 
     private void totalPedido() {
-
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         double total = 0;
         int num = Integer.valueOf(txtCodigo.getText());
@@ -324,8 +319,7 @@ public class ingresoPedido extends javax.swing.JFrame {
     }
 
     private void datosProveedor() {
-
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String ced = txtCedProv.getText();
         String nombre = "", apellido = "";
@@ -350,8 +344,7 @@ public class ingresoPedido extends javax.swing.JFrame {
     }
 
     private void datosFarmaceutico() {
-
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String ced = txtCedFarm.getText();
         String nombre = "", apellido = "";
@@ -374,22 +367,21 @@ public class ingresoPedido extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, ex);
         }
     }
-    
-       private void eliminarDetalle() {
+
+    private void eliminarDetalle() {
 
         if (tblDetalles.getSelectedRow() != -1) {
 
             if (tblDetalles.getSelectedRow() != -1 && JOptionPane.showConfirmDialog(null, "Estas seguro que quieres borrar el registro", "Borrar Registro",
                     JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                 int fila = tblDetalles.getSelectedRow();
-                
 
                 String codigo = String.valueOf(tblDetalles.getValueAt(fila, 0));
                 int num = Integer.valueOf(txtCodigo.getText());
-                conexion co = new conexion();
-                Connection cn = co.conectar();
+                CadCon cc = new CadCon();
+                Connection cn = cc.conectar();
                 String sql = "";
-                sql = "delete from DETALLE_PEDIDOS where COD_MED_P ='"+codigo+"'AND COD_PED_P='"+num+"'";
+                sql = "delete from DETALLE_PEDIDOS where COD_MED_P ='" + codigo + "'AND COD_PED_P='" + num + "'";
                 try {
                     PreparedStatement psd = cn.prepareStatement(sql);
                     int n = psd.executeUpdate();
@@ -397,8 +389,7 @@ public class ingresoPedido extends javax.swing.JFrame {
                     if (n > 0) {
                         JOptionPane.showMessageDialog(null, "se borro el registro correctamente");
                         modelo1.removeRow(fila);
-                                        
-                        
+
                     }
 
                 } catch (SQLException ex) {
@@ -410,14 +401,15 @@ public class ingresoPedido extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Si desea eliminar debe seleccione un viaje");
         }
     }
-       
-       private void limpiarTabla(){
-       for (int i = 0; i < tblDetalles.getRowCount(); i++) {
-           modelo1.removeRow(i);
-           i-=1;
-       }
-       }
-       public void nuevoPedido(){
+
+    private void limpiarTabla() {
+        for (int i = 0; i < tblDetalles.getRowCount(); i++) {
+            modelo1.removeRow(i);
+            i -= 1;
+        }
+    }
+
+    public void nuevoPedido() {
         jlNombreP1.setVisible(false);
         jLabel10.setVisible(false);
         jLabel11.setVisible(false);
@@ -429,7 +421,7 @@ public class ingresoPedido extends javax.swing.JFrame {
         txtFecha.setDate(null);
         txtLaboratorio.setText("");
         txtTotal.setText("");
-       }
+    }
 
     public void bloqueoCampos() {
         txtCodigo.setEnabled(false);
@@ -908,7 +900,7 @@ public class ingresoPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        realizarPedido();        
+        realizarPedido();
         totalPedido();
         cargarTab();
 
@@ -919,12 +911,12 @@ public class ingresoPedido extends javax.swing.JFrame {
         nuevoPedido();
 //        limpiarTabla();
         tblDetalles.setModel(new DefaultTableModel());
-        
+
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed

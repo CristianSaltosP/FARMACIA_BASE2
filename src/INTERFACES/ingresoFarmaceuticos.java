@@ -88,7 +88,7 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
     
     
      public void ingresoFarma() {
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String sql = "";
         String CI_FAR, NOM_FAR, APE_FAR, TEL_FAR, DIR_FAR, E_MAIL_FAR, SUP_ADMIN;
@@ -136,7 +136,7 @@ public class ingresoFarmaceuticos extends javax.swing.JFrame {
      
      public void actualizar() {
         int f = tblclientes.getSelectedRow();
-        Conexion.conexion cc = new Conexion.conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String sql = " ";
 

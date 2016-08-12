@@ -169,7 +169,7 @@ public class ingresoCliente extends javax.swing.JFrame {
     
     
     public void ingresoClientes() {
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String sql = "";
         String CI_CLI, NOM_CLI, APE_CLI, TEL_CLI, DIR_CLI;
@@ -208,7 +208,8 @@ public class ingresoCliente extends javax.swing.JFrame {
 
         String titulos[] = {"CI_CLI", "NOM_CLI", "APE_CLI", "TEL_CLI", "DIR_CLI"};
         modelo = new DefaultTableModel(null, titulos);
-        conexion cc = new conexion();
+        CadCon cc = new CadCon();
+
         Connection cn = cc.conectar();
         String sql = " ";
         sql = "select * from FARMACIA_R_S.clientes where CI_CLI like '%" + Dato + "%'";
@@ -234,7 +235,7 @@ public class ingresoCliente extends javax.swing.JFrame {
 
     public void actualizar() {
         int f = tblclientes.getSelectedRow();
-        Conexion.conexion cc = new Conexion.conexion();
+        CadCon cc = new CadCon();
         Connection cn = cc.conectar();
         String sql = " ";
 
